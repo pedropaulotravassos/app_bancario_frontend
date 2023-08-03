@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>App Bancario</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Meu Spa Sim</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="#cadastro">Cadastro usuario</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contas">Contas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#movimentacao">movimentacao</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#extrato">extrato</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Conteúdo da Página -->
+    <div class="container mt-5">
+      <div id="cadastro" class="mb-5">
+        <h2>Cadastro usuario</h2>
+        <div class="container mt-5">
+          <form id="cadastro">
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nome"
+                name="nome"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+        </div>
+      </div>
+      <div id="contas" class="mb-5">
+        <h2>Contas</h2>
+        <input
+          type="text"
+          id="filtro"
+          class="form-control mb-3"
+          placeholder="Filtrar por um campo..."
+        />
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaCorpo">
+            <!-- Os dados da tabela serão preenchidos aqui usando JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <div id="movimentacao" class="mb-5">
+        <h2>Movimentacao</h2>
+        <div class="container mt-5">
+          <form id="mov">
+            <div class="mb-3">
+              <label for="nomeSelect" class="form-label">Nome:</label>
+              <select id="nomeSelect" class="form-select" required>
+                <option value="">Selecione um nome...</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Valor:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="value"
+                name="value"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="opSelect" class="form-label">Operação:</label>
+              <select id="opSelect" class="form-select" required>
+                <option value="">Selecione uma operacao...</option>
+                <option value="1">Crédito</option>
+                <option value="2">Débito</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="tpSelect" class="form-label">Tipo de crédito:</label>
+              <select id="tpSelect" class="form-select" required>
+                <option value="">Selecione uma operacao...</option>
+                <option value="1">Transferencia</option>
+                <option value="2">Salario</option>
+                <option value="3">Deposito em caixa</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+        </div>
+      </div>
+      <div id="extrato">
+        <h2>Extrato</h2>
+        <div class="mb-3">
+          <label for="nomeSelectExtrato" class="form-label">Nome:</label>
+          <select id="nomeSelectExtrato" class="form-select" required>
+            <option value="">Selecione um nome...</option>
+          </select>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaExtratoCorpo">
+            <!-- Os dados da tabela serão preenchidos aqui usando JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </body>
+  <script>
+    document
+      .getElementById("cadastro")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const name = formData.get("nome");
+
+        const data = {
+          name: name,
+        };
+
+        axios
+          .post("http://localhost:3001/user", data)
+          .then((response) => {
+            return response.json();
+          })
+          .then((responseData) => {
+            alert(responseData);
+          });
+      });
+
+    document.getElementById("mov").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      let eNomeSelect = document.getElementById("nomeSelect");
+      const name =
+        formData.get("nomeSelect") ||
+        eNomeSelect.options[eNomeSelect.selectedIndex].value;
+      const value = formData.get("value");
+      let eOpSelect = document.getElementById("opSelect");
+      const operation_type_id =
+        formData.get("opSelect") ||
+        eOpSelect.options[eOpSelect.selectedIndex].value;
+      let eTpSelect = document.getElementById("tpSelect");
+      const credit_type_id =
+        formData.get("tpSelect") ||
+        eTpSelect.options[eTpSelect.selectedIndex].value;
+
+      const data = {
+        name: name,
+        value: value,
+        operation_type_id: operation_type_id,
+        credit_type_id: credit_type_id,
+      };
+
+      fetch("http://localhost:3001/account-update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Origin: "http://localhost:3000",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((responseData) => {
+          alert(responseData);
+        });
+    });
+
+    function preencherSelectComNomes(nomes, select) {
+      const selectElement = document.getElementById(select);
+
+      nomes.forEach((nome) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = nome.name;
+        optionElement.textContent = nome.name;
+        selectElement.appendChild(optionElement);
+      });
+    }
+
+    function getNomesFromAPI() {
+      axios
+        .get("http://localhost:3001/user")
+        .then((response) => {
+          preencherSelectComNomes(response.data, 'nomeSelect');
+          preencherSelectComNomes(response.data, 'nomeSelectExtrato');
+        })
+        .catch((error) => {
+          console.error("Erro:", error);
+          alert("Ocorreu um erro ao obter os nomes da API.");
+        });
+    }
+
+    function preencherTabelaComDados(dados, nometabela) {
+      const tabelaCorpo = document.getElementById(nometabela);
+      tabelaCorpo.innerHTML = "";
+
+      dados.forEach((dado) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${dado.name}</td>
+          <td>${dado.balance}</td>
+        `;
+        tabelaCorpo.appendChild(row);
+      });
+    }
+
+    function getDadosFromAPI() {
+      axios
+        .get("http://localhost:3001/account")
+        .then((response) => {
+          preencherTabelaComDados(response.data, "tabelaCorpo");
+        })
+        .catch((error) => {
+          console.error("Erro:", error);
+          alert("Ocorreu um erro ao obter os dados da API.");
+        });
+    }
+
+    document.getElementById("filtro").addEventListener("input", function () {
+      const filtroValor = this.value.toLowerCase();
+      const linhasTabela = document.querySelectorAll("#tabelaCorpo tr");
+
+      linhasTabela.forEach((linha) => {
+        const dadosCelulas = linha.getElementsByTagName("td");
+        let mostrarLinha = false;
+
+        for (const element of dadosCelulas) {
+          const cellValue = element.textContent || element.innerText;
+          if (cellValue.toLowerCase().indexOf(filtroValor) > -1) {
+            mostrarLinha = true;
+            break;
+          }
+        }
+
+        linha.style.display = mostrarLinha ? "" : "none";
+      });
+    });
+
+    document.getElementById("nomeSelectExtrato").addEventListener("input", function () {
+      const filtroValor = this.value.toLowerCase();
+
+      axios
+        .get("http://localhost:3001/user-extract?name="+ filtroValor)
+        .then((response) => {
+          preencherTabelaComDados(response.data, "tabelaExtratoCorpo");
+        })
+    });
+
+
+    function loadAll() {
+      getNomesFromAPI();
+      getDadosFromAPI();
+    }
+    window.onload = loadAll;
+  </script>
+</html>
